@@ -27,10 +27,10 @@ func (cm *ClientManager) Start() {
 			msg, _ := json.Marshal(replyMsg)
 			_ = conn.Socket.WriteMessage(1, msg)
 			// 检查是否有存储的离线消息
-			//err := conn.SendOfflineMessages()
-			//if err != nil {
-			//	logrus.Error(err)
-			//}
+			err := conn.SendOfflineMessages()
+			if err != nil {
+				logrus.Error(err)
+			}
 			go conn.SubscribeRedis(global.Ctx, conn.UserID)
 		case conn := <-Manager.Unregister: // 监听用户断开连接
 			fmt.Printf("连接断开%s\n", conn.UserID)
@@ -97,16 +97,16 @@ func (c *Client) Read() {
 		}
 		fmt.Println("保存成功")
 		// 检查接收方是否在线
-		//receiverClient, ok := Manager.Clients[sendMsg.ReceiveID]
+		receiverClient, ok := Manager.Clients[sendMsg.ReceiveID]
 		// 接收方不在线，将消息存储到 Redis 队列中
-		//if (Manager.Clients[sendMsg.ReceiveID]) == nil || !receiverClient.Online || !ok {
-		//	if !ok || !receiverClient.Online {
-		//		err := c.StoreMessageToQueue(data)
-		//		if err != nil {
-		//			logrus.Error(err)
-		//		}
-		//	}
-		//}
+		if (Manager.Clients[sendMsg.ReceiveID]) == nil || !receiverClient.Online || !ok {
+			if !ok || !receiverClient.Online {
+				err := c.StoreMessageToQueue(data)
+				if err != nil {
+					logrus.Error(err)
+				}
+			}
+		}
 		go c.PublishRedis(global.Ctx, sendMsg.ReceiveID, data) // 推送到redis
 	}
 }
