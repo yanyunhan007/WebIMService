@@ -41,10 +41,10 @@ func (u *User) GetUserInfo(field string, value any) bool {
 }
 
 // GetUserList 查找全部用户
-func (u *User) GetUserList() UserList {
-	userList := make(UserList, 10)
+func (u *User) GetUserList() (userList UserList) {
+	userList = make(UserList, 10)
 	global.DB.Debug().Find(&userList)
-	return userList
+	return
 }
 
 // CreateUser 添加一个用户

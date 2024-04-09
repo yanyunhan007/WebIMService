@@ -12,6 +12,6 @@ func (r *RouterGroup) InitWebSocketRouter(router *gin.RouterGroup) {
 	wsRouter := router.Group("").Use()
 	{
 		wsService := ws.WebsocketService{}
-		wsRouter.GET("/chat", wsService.HandleWebSocket)
+		wsRouter.GET("/wechat", wsService.HandleWebSocket)
 	}
 }

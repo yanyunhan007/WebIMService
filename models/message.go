@@ -34,5 +34,5 @@ func (msg *Message) SaveMessage() bool {
 func (msg *Message) GetHistoryMsg(userName, targetName string) (msgList MessageList, count int64) {
 	msgList = make(MessageList, 10)
 	count = global.DB.Debug().Where("(send_id = ? AND receive_id = ?) OR (send_id = ? AND receive_id = ?)", userName, targetName, targetName, userName).Find(&msgList).RowsAffected
-	return msgList, count
+	return
 }
