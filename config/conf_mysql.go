@@ -1,7 +1,7 @@
 package config
 
 import (
-	"fmt"
+	"strings"
 )
 
 type MySQL struct {
@@ -14,6 +14,9 @@ type MySQL struct {
 }
 
 func (ms *MySQL) Dsn() (dsn string) {
-	dsn = fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=true&loc=Local", ms.User, ms.Password, ms.Host, ms.Port, ms.DB)
+	var sb strings.Builder
+	// 高效拼接
+	sb.WriteString(ms.User + ":" + ms.Password + "@tcp(" + ms.Host + ":" + ms.Port + ")/" + ms.DB + "?charset=utf8&parseTime=True&loc=Local")
+	dsn = sb.String()
 	return
 }

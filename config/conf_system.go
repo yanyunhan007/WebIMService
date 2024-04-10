@@ -1,6 +1,9 @@
 package config
 
-import "fmt"
+import (
+	"strconv"
+	"strings"
+)
 
 type System struct {
 	Host string `yaml:"host"`
@@ -8,6 +11,9 @@ type System struct {
 	Env  string `yaml:"env"`
 }
 
-func (s *System) Address() string {
-	return fmt.Sprintf("%s:%d", s.Host, s.Port)
+func (s *System) Address() (address string) {
+	var sb strings.Builder
+	sb.WriteString(s.Host + ":" + strconv.Itoa(s.Port))
+	address = sb.String()
+	return
 }
